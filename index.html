@@ -1,175 +1,239 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Valentine 💖</title>
 
 <style>
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
 
-*{
-box-sizing:border-box;
-}
+    /* background image */
+    background: url("love.jpg") center/cover no-repeat fixed;
+  }
+  /* soft overlay to keep text readable */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(255, 192, 203, 0.25);
+  }
 
-body{
-margin:0;
-font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
+  .card{
+    position:relative;
+    z-index:2;
+    width:min(380px, 92vw);
+    background:rgba(255,255,255,0.92);
+    padding:28px 18px;
+    border-radius:24px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px);
+  }
 
-/* YOUR IMAGE */
-background: url("love.jpg") center/cover no-repeat fixed;
-}
+  h1{
+    margin:6px 0 10px;
+    color:#ff4d6d;
+    font-size:28px;
+    line-height:1.15;
+  }
+  .sub{
+    color:#6f2742;
+    margin:0 0 18px;
+    font-size:14px;
+  }
+  .hint{
+    color:#a24b68;
+    font-size:13px;
+    margin:0 0 16px;
+  }
 
-/* Soft overlay */
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:rgba(255,192,203,0.25);
-}
+  .buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    position:relative;
+    padding:10px 0 2px;
+    min-height:62px;
+  }
 
-/* Card */
-.card{
-position:relative;
-background:white;
-padding:40px;
-border-radius:25px;
-text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,0.2);
-width:320px;
-z-index:2;
-}
+  button{
+    padding:14px 22px;
+    border:none;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+  }
 
-h1{
-color:#ff4d6d;
-margin-bottom:15px;
-}
+  #yes{
+    background:#ff4d6d;
+    color:#fff;
+    box-shadow:0 12px 25px rgba(255,77,109,0.35);
+  }
 
-.sub{
-color:#7a2947;
-margin-bottom:20px;
-}
+  #no{
+    background:#fff;
+    border:2px solid rgba(255,77,109,0.35);
+    color:#7a2947;
+    position:relative;
+  }
 
-/* Buttons */
-.buttons{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:20px;
-position:relative;
-}
+  /* modal */
+  .modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,0.35);
+    z-index:10;
+    padding:16px;
+  }
+  .modal-box{
+    width:min(420px, 92vw);
+    background:#fff;
+    border-radius:22px;
+    padding:22px 18px;
+    text-align:center;
+    box-shadow:0 30px 90px rgba(0,0,0,0.28);
+  }
+  .modal-title{
+    margin:0 0 10px;
+    font-size:22px;
+    color:#7a2947;
+    font-weight:900;
+  }
+  .modal-text{
+    margin:0 0 14px;
+    color:#4d2033;
+    line-height:1.55;
+    font-size:15px;
+  }
 
-button{
-padding:14px 25px;
-border:none;
-border-radius:14px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-#yes{
-background:#ff4d6d;
-color:white;
-}
-
-#no{
-background:white;
-border:2px solid #ff4d6d;
-color:#ff4d6d;
-position:relative;
-}
-
-/* Popup */
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:5;
-}
-
-.modal-box{
-background:white;
-padding:30px;
-border-radius:20px;
-text-align:center;
-max-width:320px;
-}
-
+  .row{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .soft{
+    background:#ffe1ea;
+    color:#7a2947;
+    box-shadow:none;
+    font-weight:800;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC -->
-<audio id="music" src="music.mp3.mp3" loop></audio>
+<!-- Music (must be started by click) -->
+<audio id="music" src="music.mp3.mp3" preload="auto" loop></audio>
 
 <div class="card">
-<h1 id="title">Will you be my Valentine forever? 💖</h1>
-<div class="sub">I made this only for you 💕</div>
+  <h1 id="title">Will you be my Valentine forever? 💖</h1>
+  <p class="sub" id="subLine">I don’t know anything about coding… but I made this only for you 🥺💗</p>
+  <p class="hint">Choose wisely. (The “No” button is… shy 😳)</p>
 
-<div class="buttons">
-<button id="yes">YES 💖</button>
-<button id="no">NO</button>
-</div>
+  <div class="buttons" id="btnArea">
+    <button id="yes">YES 💘</button>
+    <button id="no">NO</button>
+  </div>
 </div>
 
 <div class="modal" id="modal">
-<div class="modal-box">
-<h2>YAYYYYY 🥹💘</h2>
-<p>
-You just made my whole universe brighter.  
-I choose you today, tomorrow and forever 💞
-</p>
-<br>
-<button onclick="closeModal()">Aww 🥰</button>
-</div>
+  <div class="modal-box">
+    <div class="modal-title" id="modalTitle">YAYYYYY 💞</div>
+    <p class="modal-text" id="modalText">
+      <!-- we set this from JS -->
+    </p>
+
+    <div class="row">
+      <button class="soft" id="playBtn">▶ Play music</button>
+      <button class="soft" id="closeBtn">Aww 🥰</button>
+    </div>
+  </div>
 </div>
 
 <script>
+  // Personalize name from URL: ?to=Meowieee
+  const params = new URLSearchParams(window.location.search);
+  const to = params.get("to") || "Meowieee";
 
-/* Name from URL */
-const params = new URLSearchParams(window.location.search);
-const to = params.get("to") || "Meowieee";
+  document.getElementById("title").innerText = `${to}, will you be my Valentine forever? 💖`;
+  document.getElementById("modalTitle").innerText = `YAYYYYY ${to} 🥺💘`;
 
-document.getElementById("title").innerText =
-to + ", will you be my Valentine forever? 💖";
+  // YOUR desired romantic "YES" text:
+  const yesMessage =
+    `You’re my favorite person, my safest place, and my best decision. ` +
+    `I want you — not just for today — but for every tomorrow and every forever. 💞`;
 
-/* Music start on YES */
-const music = document.getElementById("music");
+  document.getElementById("modalText").innerText = yesMessage;
 
-/* NO button runs away */
-const noBtn = document.getElementById("no");
+  // NO button runs away
+  const noBtn = document.getElementById("no");
+  const btnArea = document.getElementById("btnArea");
 
-function moveNo(){
-noBtn.style.position="absolute";
-noBtn.style.left=Math.random()*250+"px";
-noBtn.style.top=Math.random()*250+"px";
-}
+  function moveNo(){
+    const area = btnArea.getBoundingClientRect();
+    const bw = noBtn.offsetWidth;
+    const bh = noBtn.offsetHeight;
 
-noBtn.addEventListener("mouseover",moveNo);
-noBtn.addEventListener("click",moveNo);
+    const maxX = Math.max(10, area.width - bw - 10);
+    const x = Math.random() * maxX;
+    const y = (Math.random() * 120) - 60;
 
-/* YES click */
-document.getElementById("yes").onclick=function(){
-document.getElementById("modal").style.display="flex";
-music.play();
-}
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
 
-function closeModal(){
-document.getElementById("modal").style.display="none";
-}
+  noBtn.addEventListener("mouseenter", moveNo);
+  noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNo(); });
+  noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
 
+  // Music start
+  const music = document.getElementById("music");
+  async function startMusic(){
+    try{
+      music.volume = 0.85;
+      await music.play();
+      return true;
+    }catch(err){
+      return false;
+    }
+  }
+
+  // YES shows modal + starts music
+  const modal = document.getElementById("modal");
+  document.getElementById("yes").addEventListener("click", async ()=>{
+    modal.style.display="flex";
+    const ok = await startMusic();
+
+    // If blocked, show "Play music" button (it will always work on click)
+    const playBtn = document.getElementById("playBtn");
+    playBtn.style.display = ok ? "none" : "inline-block";
+  });
+
+  // Play music button fallback
+  document.getElementById("playBtn").addEventListener("click", async ()=>{
+    const ok = await startMusic();
+    if(ok) document.getElementById("playBtn").style.display="none";
+  });
+
+  // Close
+  document.getElementById("closeBtn").addEventListener("click", ()=> modal.style.display="none");
+  modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.style.display="none"; });
 </script>
 
 </body>
