@@ -3,34 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine 💘</title>
+<title>Valentine 💖</title>
 
 <style>
-*{box-sizing:border-box;}
+
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
-font-family: Arial, sans-serif;
-background: url("love.jpg") center/cover no-repeat fixed;
+font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
 overflow:hidden;
+
+/* YOUR IMAGE */
+background: url("love.jpg") center/cover no-repeat fixed;
 }
 
+/* Soft overlay */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(255,192,203,0.25);
+}
+
+/* Card */
 .card{
-background:rgba(255,255,255,0.9);
+position:relative;
+background:white;
 padding:40px;
 border-radius:25px;
 text-align:center;
 box-shadow:0 20px 60px rgba(0,0,0,0.2);
 width:320px;
+z-index:2;
 }
 
 h1{
 color:#ff4d6d;
-font-size:30px;
 margin-bottom:15px;
 }
 
@@ -39,6 +54,7 @@ color:#7a2947;
 margin-bottom:20px;
 }
 
+/* Buttons */
 .buttons{
 display:flex;
 justify-content:center;
@@ -68,6 +84,7 @@ color:#ff4d6d;
 position:relative;
 }
 
+/* Popup */
 .modal{
 position:fixed;
 top:0;
@@ -78,6 +95,7 @@ background:rgba(0,0,0,0.4);
 display:none;
 align-items:center;
 justify-content:center;
+z-index:5;
 }
 
 .modal-box{
@@ -85,12 +103,16 @@ background:white;
 padding:30px;
 border-radius:20px;
 text-align:center;
-max-width:300px;
+max-width:320px;
 }
+
 </style>
 </head>
 
 <body>
+
+<!-- MUSIC -->
+<audio id="music" src="music.mp3.mp3" loop></audio>
 
 <div class="card">
 <h1 id="title">Will you be my Valentine forever? 💖</h1>
@@ -104,7 +126,7 @@ max-width:300px;
 
 <div class="modal" id="modal">
 <div class="modal-box">
-<h2 id="modalTitle">YAYYYYY 🥹💘</h2>
+<h2>YAYYYYY 🥹💘</h2>
 <p>
 You just made my whole universe brighter.  
 I choose you today, tomorrow and forever 💞
@@ -115,33 +137,39 @@ I choose you today, tomorrow and forever 💞
 </div>
 
 <script>
+
+/* Name from URL */
 const params = new URLSearchParams(window.location.search);
 const to = params.get("to") || "Meowieee";
 
 document.getElementById("title").innerText =
 to + ", will you be my Valentine forever? 💖";
 
-document.getElementById("modalTitle").innerText =
-"YAYYYYY " + to + " 🥹💘";
+/* Music start on YES */
+const music = document.getElementById("music");
 
+/* NO button runs away */
 const noBtn = document.getElementById("no");
 
 function moveNo(){
 noBtn.style.position="absolute";
 noBtn.style.left=Math.random()*250+"px";
-noBtn.style.top=Math.random()*200+"px";
+noBtn.style.top=Math.random()*250+"px";
 }
 
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("click",moveNo);
 
+/* YES click */
 document.getElementById("yes").onclick=function(){
 document.getElementById("modal").style.display="flex";
+music.play();
 }
 
 function closeModal(){
 document.getElementById("modal").style.display="none";
 }
+
 </script>
 
 </body>
