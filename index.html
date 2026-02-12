@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine 💘</title>
+
+  <style>
+    :root{
+      --pink:#ff4d6d;
+      --deep:#8a1538;
+      --bg1:#ffe6ee;
+      --bg2:#ffd1dc;
+      --card:#ffffffee;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 10%, var(--bg2), var(--bg1) 60%, #fff 120%);
+      overflow:hidden;
+    }
+
+    /* floating hearts */
+    .heart {
+      position:absolute;
+      font-size:18px;
+      opacity:.25;
+      animation: floatUp linear infinite;
+      user-select:none;
+      pointer-events:none;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(30vh) translateX(0) rotate(0deg); }
+      to  { transform: translateY(-120vh) translateX(60px) rotate(25deg); }
+    }
+
+    .wrap{
+      width:min(540px, 92vw);
+      padding:28px 18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:26px;
+      padding:28px 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.12);
+      border: 1px solid rgba(255,255,255,.6);
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    h1{
+      margin:6px 0 10px;
+      font-size: clamp(30px, 6vw, 44px);
+      line-height:1.05;
+      color:var(--pink);
+      letter-spacing:.3px;
+    }
+    h1 span{
+      color:var(--deep);
+      font-weight:800;
+    }
+    .sub{
+      margin:10px 0 20px;
+      color:#7a2947;
+      font-size:16px;
+    }
+    .hint{
+      margin:8px 0 24px;
+      color:#a24b68;
+      font-size:14px;
+    }
+
+    .btnRow{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      position:relative;
+      padding: 8px 0 2px;
+    }
+
+    button{
+      border:0;
+      border-radius:16px;
+      padding:14px 22px;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease;
+      min-width:120px;
+      touch-action:manipulation;
+    }
+    #yesBtn{
+      background:var(--pink);
+      color:white;
+      box-shadow: 0 12px 25px rgba(255,77,109,.35);
+    }
+    #yesBtn:hover{ transform: translateY(-2px); }
+    #noBtn{
+      background:white;
+      color:#6b1e39;
+      border: 2px solid rgba(107,30,57,.18);
+      position:relative; /* we’ll move it with JS */
+    }
+
+    /* YES message modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(3px);
+    }
+    .modalInner{
+      width:min(520px, 92vw);
+      background:white;
+      border-radius:24px;
+      padding:26px 20px;
+      text-align:center;
+      box-shadow: 0 30px 80px rgba(0,0,0,.18);
+    }
+    .big{
+      font-size:22px;
+      font-weight:800;
+      color:var(--deep);
+      margin:0 0 10px;
+    }
+    .msg{
+      font-size:16px;
+      color:#5b2237;
+      line-height:1.55;
+      margin:0 0 16px;
+    }
+    .close{
+      background: #ffe1ea;
+      color: var(--deep);
+      box-shadow:none;
+    }
+    .tiny{
+      font-size:12px;
+      color:#9a5b72;
+      margin-top:10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1><span id="toName">Meowieee</span>,<br>will you be my Valentine forever? 💞</h1>
+      <div class="sub">From <b id="fromName">Gowshy</b> — with a heart that’s already yours.</div>
+      <div class="hint">Choose wisely. (The “No” button is… shy 😳)</div>
+
+      <div class="btnRow" id="btnRow">
+        <button id="yesBtn">YES 💖</button>
+        <button id="noBtn" aria-label="No">NO</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modalInner">
+      <p class="big">YAYYYYY!! 🥹💘</p>
+      <p class="msg" id="yesMessage">
+        You just made my whole universe brighter. I choose you today, tomorrow,
+        and all the “forevers” after that. 🌙✨
+      </p>
+      <button class="close" id="closeBtn">Aww 🥰</button>
+      <div class="tiny">P.S. Screenshot this and send it to me 😌</div>
+    </div>
+  </div>
+
+<script>
+  // --- read names from URL like: ?from=Gowshy&to=Meowieee
+  const params = new URLSearchParams(location.search);
+  const from = params.get("from") || "Someone";
+  const to = params.get("to") || "My Love";
+
+  document.getElementById("fromName").textContent = from;
+  document.getElementById("toName").textContent = to;
+
+  // --- floating hearts
+  const heartEmojis = ["💗","💖","💘","💕","💞","💓"];
+  for (let i=0; i<18; i++){
+    const s = document.createElement("div");
+    s.className = "heart";
+    s.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+    s.style.left = Math.random()*100 + "vw";
+    s.style.animationDuration = (8 + Math.random()*10) + "s";
+    s.style.animationDelay = (-Math.random()*10) + "s";
+    s.style.fontSize = (14 + Math.random()*18) + "px";
+    document.body.appendChild(s);
+  }
+
+  // --- "NO" button runs away
+  const noBtn = document.getElementById("noBtn");
+  const btnRow = document.getElementById("btnRow");
+
+  function moveNoButton(){
+    const rowRect = btnRow.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+
+    // move within a safe area around the row
+    const maxX = Math.max(20, rowRect.width - btnRect.width - 10);
+    const maxY = 140; // allow it to jump a little vertically
+
+    const x = Math.random() * maxX;
+    const y = (Math.random() * maxY) - (maxY/2);
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+
+  // desktop hover + mobile touch
+  noBtn.addEventListener("mouseenter", moveNoButton);
+  noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNoButton(); }, {passive:false});
+  noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNoButton(); });
+
+  // --- YES shows romantic message
+  const modal = document.getElementById("modal");
+  const yesBtn = document.getElementById("yesBtn");
+  const closeBtn = document.getElementById("closeBtn");
+  const yesMessage = document.getElementById("yesMessage");
+
+  const yesLines = [
+    `You just made my whole universe brighter, ${to}. 💘`,
+    `I don’t just want a Valentine… I want *you*, forever. 🌙✨`,
+    `Thank you for choosing me. I’m choosing you — always. 💞`,
+    `Okay, now come here… I owe you about 1,000 kisses. 😘`
+  ];
+
+  yesBtn.addEventListener("click", ()=>{
+    yesMessage.textContent = yesLines.join(" ");
+    modal.style.display = "flex";
+  });
+
+  closeBtn.addEventListener("click", ()=> modal.style.display = "none");
+  modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.style.display = "none"; });
+</script>
+</body>
+</html>
