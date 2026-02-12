@@ -6,137 +6,293 @@
 <title>Valentine 💘</title>
 
 <style>
-body{
-margin:0;
-font-family: Arial, sans-serif;
-background: linear-gradient(135deg,#ffe6ee,#ffd1dc);
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
-}
+  :root{
+    --pink:#ff4d6d;
+    --deep:#8a1538;
+  }
 
-.card{
-background:white;
-padding:40px;
-border-radius:25px;
-text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,0.15);
-width:320px;
-}
+  *{box-sizing:border-box}
 
-h1{
-color:#ff4d6d;
-font-size:32px;
-margin-bottom:15px;
-}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
 
-.sub{
-color:#7a2947;
-margin-bottom:20px;
-}
+    /* Background image (upload bg.jpg into your repo) */
+    background: url("bg.jpg") center/cover no-repeat fixed;
+  }
 
-.buttons{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:20px;
-position:relative;
-}
+  /* Soft pink overlay so text stays readable */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background: rgba(255, 230, 238, 0.62);
+    pointer-events:none;
+  }
 
-button{
-padding:14px 25px;
-border:none;
-border-radius:14px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
+  /* Floating hearts */
+  .heart{
+    position:absolute;
+    font-size:18px;
+    opacity:.25;
+    animation: floatUp linear infinite;
+    user-select:none;
+    pointer-events:none;
+    z-index:0;
+  }
+  @keyframes floatUp{
+    from{ transform: translateY(30vh) translateX(0) rotate(0deg); }
+    to  { transform: translateY(-120vh) translateX(60px) rotate(25deg); }
+  }
 
-#yes{
-background:#ff4d6d;
-color:white;
-}
+  .card{
+    background:rgba(255,255,255,0.92);
+    padding:36px 22px;
+    border-radius:26px;
+    text-align:center;
+    box-shadow:0 20px 70px rgba(0,0,0,0.14);
+    width:min(440px, 92vw);
+    border: 1px solid rgba(255,255,255,.6);
+    position:relative;
+    z-index:1;
+  }
 
-#no{
-background:white;
-border:2px solid #ff4d6d;
-color:#ff4d6d;
-position:relative;
-}
+  h1{
+    color:var(--pink);
+    font-size: clamp(28px, 6vw, 40px);
+    margin: 6px 0 10px;
+    line-height:1.05;
+    letter-spacing:.2px;
+  }
 
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-display:none;
-align-items:center;
-justify-content:center;
-}
+  .sub{
+    color:#7a2947;
+    margin: 10px 0 6px;
+    font-size:16px;
+  }
 
-.modal-box{
-background:white;
-padding:30px;
-border-radius:20px;
-text-align:center;
-max-width:300px;
-}
+  .hint{
+    color:#a24b68;
+    font-size:14px;
+    margin: 0 0 18px;
+  }
+
+  .buttons{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-top:18px;
+    position:relative;
+    padding: 10px 0 6px;
+  }
+
+  button{
+    padding:14px 22px;
+    border:none;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    transition: transform .12s ease;
+    min-width:120px;
+    touch-action:manipulation;
+  }
+
+  #yes{
+    background:var(--pink);
+    color:white;
+    box-shadow:0 12px 25px rgba(255,77,109,.35);
+  }
+  #yes:hover{ transform: translateY(-2px); }
+
+  #no{
+    background:white;
+    border:2px solid rgba(255,77,109,.35);
+    color:var(--deep);
+    position:relative;
+  }
+
+  /* Music button */
+  #musicBtn{
+    margin-top:14px;
+    background:#ffe1ea;
+    color:var(--deep);
+    box-shadow:none;
+    min-width:auto;
+    padding:10px 14px;
+    border-radius:14px;
+    font-weight:800;
+  }
+
+  /* YES modal */
+  .modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    backdrop-filter: blur(3px);
+    z-index:5;
+  }
+
+  .modal-box{
+    background:white;
+    padding:28px 20px;
+    border-radius:24px;
+    text-align:center;
+    width:min(560px, 92vw);
+    box-shadow:0 30px 90px rgba(0,0,0,0.20);
+  }
+
+  .modal-box h2{
+    margin: 0 0 10px;
+    color:var(--deep);
+    font-size:22px;
+  }
+
+  .modal-box p{
+    margin:0 0 16px;
+    color:#5b2237;
+    line-height:1.6;
+    font-size:16px;
+  }
+
+  .closeBtn{
+    background:#ffe1ea;
+    color:var(--deep);
+    box-shadow:none;
+    min-width:auto;
+  }
+
+  .tiny{
+    font-size:12px;
+    color:#9a5b72;
+    margin-top:10px;
+  }
 </style>
 </head>
 
 <body>
 
 <div class="card">
-<h1 id="title">Will you be my Valentine forever? 💖</h1>
-<div class="sub">I made this only for you 💕</div>
+  <h1 id="title">Meowiee, will you be my Valentine forever? 💖</h1>
 
-<div class="buttons">
-<button id="yes">YES 💖</button>
-<button id="no">NO</button>
-</div>
+  <div class="sub">I don’t know anything about coding, but I made this only for you 💕</div>
+  <div class="hint">(No is toooo shy 😳)</div>
+
+  <div class="buttons" id="btnRow">
+    <button id="yes">YES 💖</button>
+    <button id="no">NO</button>
+  </div>
+
+  <button id="musicBtn">▶ Play music 🎵</button>
+
+  <!-- Background music (upload music.mp3 into your repo) -->
+  <audio id="bgm" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
 </div>
 
 <div class="modal" id="modal">
-<div class="modal-box">
-<h2>YAYYYYY 🥹💘</h2>
-<p id="yesText">
-You just made my whole universe brighter.  
-I choose you today, tomorrow and forever 💞
-</p>
-<br>
-<button onclick="closeModal()">Aww 🥰</button>
-</div>
+  <div class="modal-box">
+    <h2 id="modalTitle">YAYYYYY, Meowiee!! 🥹💘</h2>
+    <p id="yesText">
+      I love you more and more every day, Meowiee. 💗<br>
+      You’re my favorite person, my safest place, and my happiest feeling. 💞<br>
+      I would choose you in every lifetime — today, tomorrow, near, far… forever.<br><br>
+      Thank you for asking me in 2022 — and for the day I said yes.<br>
+      You’re one of the best decisions I’ve ever made in my life. ✨
+    </p>
+    <button class="closeBtn" onclick="closeModal()">Aww 🥰</button>
+    <div class="tiny">P.S. Screenshot this and send it to me 😌</div>
+  </div>
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const to = params.get("to") || "My Love";
+  // Personalize name via URL: ?to=Meowiee
+  const params = new URLSearchParams(window.location.search);
+  const to = params.get("to") || "Meowiee";
 
-document.getElementById("title").innerText =
-to + ", will you be my Valentine forever? 💖";
+  document.getElementById("title").innerText =
+    to + ", will you be my Valentine forever? 💖";
+  document.getElementById("modalTitle").innerText =
+    "YAYYYYY, " + to + "!! 🥹💘";
 
-const noBtn = document.getElementById("no");
+  // Floating hearts
+  const heartEmojis = ["💗","💖","💘","💕","💞","💓","🌸","✨"];
+  for (let i=0; i<22; i++){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+    h.style.left = Math.random()*100 + "vw";
+    h.style.animationDuration = (8 + Math.random()*10) + "s";
+    h.style.animationDelay = (-Math.random()*10) + "s";
+    h.style.fontSize = (14 + Math.random()*18) + "px";
+    document.body.appendChild(h);
+  }
 
-function moveNo(){
-noBtn.style.position="absolute";
-noBtn.style.left=Math.random()*200+"px";
-noBtn.style.top=Math.random()*200+"px";
-}
+  // NO button runs away
+  const noBtn = document.getElementById("no");
+  const btnRow = document.getElementById("btnRow");
 
-noBtn.addEventListener("mouseover",moveNo);
-noBtn.addEventListener("click",moveNo);
+  function moveNo(){
+    const rowRect = btnRow.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
 
-document.getElementById("yes").onclick=function(){
-document.getElementById("modal").style.display="flex";
-}
+    const maxX = Math.max(20, rowRect.width - btnRect.width - 10);
+    const maxY = 140;
 
-function closeModal(){
-document.getElementById("modal").style.display="none";
-}
+    const x = Math.random() * maxX;
+    const y = (Math.random() * maxY) - (maxY/2);
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+
+  noBtn.addEventListener("mouseenter", moveNo);
+  noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
+  noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNo(); });
+
+  // YES opens modal
+  const modal = document.getElementById("modal");
+  document.getElementById("yes").onclick = function(){
+    modal.style.display="flex";
+  };
+  function closeModal(){
+    modal.style.display="none";
+  }
+  window.closeModal = closeModal;
+
+  modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+
+  // Music (tap to start)
+  const musicBtn = document.getElementById("musicBtn");
+  const bgm = document.getElementById("bgm");
+  let playing = false;
+
+  musicBtn.addEventListener("click", async ()=>{
+    try{
+      if(!playing){
+        await bgm.play();
+        playing = true;
+        musicBtn.textContent = "⏸ Pause music 🎵";
+      }else{
+        bgm.pause();
+        playing = false;
+        musicBtn.textContent = "▶ Play music 🎵";
+      }
+    }catch(err){
+      alert("Music couldn’t start. Try tapping again 🙂");
+    }
+  });
 </script>
 
 </body>
